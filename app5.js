@@ -156,6 +156,19 @@ app.post("/pokemonzukan/add", (req, res) => {
   res.render('pokemonzukan', { data: pokemon });
 });
 
+app.get("/pokemonzukan/delete/:number", (req, res) => {
+  const number = req.params.number;
+  const detail = pokemon[number]; 
+  res.render('pokemonzukan_delete', { id: number, data: detail });
+});
+
+app.post("/pokemonzukan/delete-confirm/:number", (req, res) => {
+  const number = req.params.number;
+  pokemon.splice(number, 1);
+  console.log("削除を実行しました");
+  res.redirect('/pokemonzukan');
+});
+
 app.get("/hello1", (req, res) => {
   const message1 = "Hello world";
   const message2 = "Bon jour";

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>削除の確認 - <%= data.name %></title>
+</head>
+<body>
+    <h2>このポケモンを図鑑から削除しますか？</h2>
+    <table>
+        <tr><th>項目</th><th>データ</th></tr>
+        <tr><td>図鑑番号</td><td><%= data.code %></td></tr>
+        <tr><td>名前</td><td><%= data.name %></td></tr>
+        <tr><td>タイプ</td><td><%= data.type %></td></tr>
+    </table>
+
+    <form action="/pokemonzukan/delete-confirm/<%= id %>" method="POST">
+        <button type="submit" style="color: red;">本当に削除する</button>
+        <a href="/pokemonzukan">キャンセルして戻る</a>
+    </form>
+</body>
+</html>
