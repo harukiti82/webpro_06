@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ポケモンの追加</title>
+</head>
+<body>
+    <form action="/pokemonzukan/add" method="POST">
+        <input type="text" name="code" required>
+        <label for="code">図鑑番号:</label><br>
+        <input type="text" name="name" required>
+        <label for="name">名前:</label><br>
+        <input type="text" name="bunrui">
+        <label for="bunrui">分類:</label><br>
+        <input type="text" name="type" required>
+        <label for="type">タイプ:</label><br>
+        <input type="text" name="takasa" required>
+        <label for="takasa">高さ:</label><br>
+        <input type="text" name="omosa" required>
+        <label for="omosa">重さ:</label><br>
+        <input type="text" name="setumei" required>
+        <label for="setumei">説明:</label><br>
+        <input type="submit" values="登録">
+    </form>
+</body>
+</html>

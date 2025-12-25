@@ -1,0 +1,21 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>残念なポケモン図鑑</title>
+</head>
+<body>
+  <h2>図鑑説明が残念なポケモン一覧</h2>
+  <table>
+    <tr><th>No.</th><th>分類</th><th>ポケモン名</th></tr>
+      <% let number = 0 %>
+      <% for( let row of data ) { %>
+        <tr><td><%= row.code %></td>
+        <td><%= row.bunrui %></td>
+        <td><a href="/pokemonzukan/<%= number %>"><%= row.name %></a></td></tr>
+        <% number += 1 %>
+      <% } %>
+  </table>
+  <a href="/pokemonzukan/create">追加</a>
+</body>
+</html>
