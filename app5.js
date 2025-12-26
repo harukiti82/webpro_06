@@ -119,6 +119,9 @@ app.get("/pokemonzukan/:number", (req, res) => {
   // 本来ならここにDBとのやり取りが入る
   const number = req.params.number;
   const detail = pokemon[ number ];
+  if (!detail) {
+    return res.status(404).send("その番号のポケモンは図鑑に登録されていません。 <a href='/pokemonzukan'>図鑑一覧に戻る</a>");
+  }
   res.render('pokemonzukan_detail', {id: number, data: detail} );
 });
 
@@ -146,6 +149,9 @@ app.post("/pokemonzukan/update/:number", (req, res) => {
 });
 
 app.post("/pokemonzukan/add", (req, res) => {
+  if (!req.body.name || !req.body.code) {
+    return res.status(400).send("名前と図鑑番号は必ず入力してください");
+  }
   let code = req.body.code;
   let name = req.body.name;
   let bunrui = req.body.bunrui;
@@ -359,6 +365,9 @@ app.get("/janken", (req, res) => {
     total: total
   }
   res.render( 'janken', display );
+});
+app.use((req, res) => {
+  res.status(404).sendFile(__dirname + '/public/error.html'); 
 });
 
 app.listen(8080, () => console.log("Example app listening on port 8080!"));
