@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>最強剣の追加</title>
+</head>
+<body>
+    <h2>追加したい最強剣の詳細を書いてください</h2>
+    <form action="/saikyouken/add" method="POST">
+        <input type="text" name="name" required>
+        <label for="name">名前:</label><br>
+        <input type="text" name="level">
+        <label for="level">レベル制限:</label><br>
+        <input type="text" name="Atk" required>
+        <label for="Atk">ATKの数値:</label><br>
+        <input type="text" name="Mat" required>
+        <label for="Mat">MATの数値:</label><br>
+        <input type="text" name="Pow" required>
+        <label for="Pow">POWの数値:</label><br>
+        <input type="text" name="Int" required>
+        <label for="Int">INTの数値:</label><br>
+        <input type="text" name="Spd" required>
+        <label for="Spd">SPDの数値:</label><br>
+        <input type="text" name="Vit" required>
+        <label for="Vit">VITの数値:</label><br>
+        <input type="text" name="Luk" required>
+        <label for="Luk">LUKの数値:</label><br>
+        <input type="text" name="setumei" required>
+        <label for="setumei">説明:</label><br>
+        <input type="text" name="sozai" required>
+        <label for="sozai">作成するのに必要な素材:</label><br>
+        <input type="submit" values="登録">
+    </form>
+</body>
+</html>

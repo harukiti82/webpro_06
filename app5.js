@@ -37,7 +37,18 @@ let pokemon = [
   { id:9, code:132, name:"メタモン",  bunrui:"へんしんポケモン", type:"ノーマル", takasa:0.3, omosa:4.0, setumei:"変身は完璧なのだが笑わされて力が抜けると変身は解けてしまう" },
   { id:10, code:129, name:"コイキング",  bunrui:"さかなポケモン", type:"水", takasa:0.9, omosa:10.0, setumei:"力のない情けないポケモン。たまに高く飛び跳ねても2メートルを越すのがやっとだ。" },
 ];
-
+let saikyou = [
+  { id:1, name:"霊刀・レイゲンノタチ",  level:"76", Atk:380, Mat:0, Pow:17, Int:12, Spd:0, Vit:0, Luk:0, setumei:"強力な霊力を纏い，魂をも斬るとされる霊刀。持つ者に合わせた重さになる。", sozai:"アメノハバキリ×1,呪われた刃×40,墓守の宝珠×14" },
+  { id:2, name:"神撃剣",  level:"80", Atk:440, Mat:0, Pow:20, Int:15, Spd:0, Vit:0, Luk:0, setumei:"神すらも焼き尽くす聖炎と融合した人智を超えし神剣。", sozai:"霊刀・レイゲンノタチ×1,アポフィカリックテキスト×15,生命のアンク×50,エーデルフレイム×100" },
+  { id:3, name:"神魔剣ベルゼデウス",  level:"81", Atk:500, Mat:0, Pow:25, Int:25, Spd:0, Vit:25, Luk:0, setumei:"強大な力を持つ大悪魔すらも瞬時に討ち消すとされる魔王の魔力を融合した神魔剣。", sozai:"神撃剣×1" },
+  { id:4, name:"炎帝剣トリアケラス",  level:"82", Atk:555, Mat:0, Pow:30, Int:30, Spd:0, Vit:30, Luk:0, setumei:"竜族の強力な力によって耐えることのない炎を纏った炎帝剣。", sozai:"神魔剣ベルゼデウス×1" },
+  { id:5, name:"聖氷剣クインタニア(青)",  level:"83", Atk:666, Mat:0, Pow:40, Int:30, Spd:0, Vit:35, Luk:0, setumei:"古の時代、聖氷神により賜り、聖宝として崇められる剣からその闘志を受け継ぐことで、創造された聖氷剣。", sozai:"炎帝剣トリアケラス×1,青いかぶりんご×15,フローズンハート×50" },
+  { id:6, name:"聖氷剣クインタニア(緑)",  level:"83", Atk:0, Mat:666, Pow:30, Int:40, Spd:0, Vit:35, Luk:0, setumei:"古の時代、聖氷神により賜り、聖宝として崇められる剣からその闘志を受け継ぐことで、創造された聖氷剣。", sozai:"炎帝剣トリアケラス×1,赤いかじりんご×15,フローズンハート×50" },
+  { id:7, name:"救世剣イデアフリード(青)",  level:"84", Atk:700, Mat:0, Pow:50, Int:30, Spd:0, Vit:40, Luk:0, setumei:"古の時代、聖氷神により賜り、聖宝として崇められる剣からその闘志を受け継ぐことで、創造された聖氷剣。", sozai:"炎帝剣トリアケラス×1,赤いかじりんご×15,フローズンハート×50" },
+  { id:8, name:"救世剣イデアフリード(緑)",  level:"84", Atk:0, Mat:700, Pow:30, Int:50, Spd:0, Vit:40, Luk:0, setumei:"万物に変革をもたらす救世の剣。正しき理想を抱く者へ大いなる力を与える。", sozai:"聖氷剣クインタニア(青or緑)×1,ピュアドロップ×200,アルタサファイア×100,アルタジェード×200,絶輝水晶×110" },
+  { id:9, name:"真・神律剣マグナステラ(青)",  level:"85", Atk:777, Mat:0, Pow:60, Int:30, Spd:0, Vit:50, Luk:0, setumei:"神を律する偉大な剣。真の力を手に入れた剣は世界に変革をもたらす強大な力を持つ。", sozai:"救世剣イデアフリード(青or緑)×1,ファントムメモリア×250,ミラージュメモリア×250,ファントムペリドット×250,メモリアペリドット×250,ファントムゼーレ×25.ミラージュゼーレ×25,夢幻のマリス×40,夢幻のレーヴ×40" },
+  { id:10, name:"真・神律剣マグナステラ(緑)",  level:"85", Atk:0, Mat:777, Pow:30, Int:60, Spd:0, Vit:50, Luk:0, setumei:"神を律する偉大な剣。真の力を手に入れた剣は世界に変革をもたらす強大な力を持つ。", sozai:"救世剣イデアフリード(青or緑)×1,ファントムメモリア×250,ミラージュメモリア×250,ファントムペリドット×250,メモリアペリドット×250,ファントムゼーレ×25.ミラージュゼーレ×25,夢幻のマリス×40,夢幻のレーヴ×40" },
+];
 
 
 app.get("/keiyo2", (req, res) => {
@@ -168,6 +179,95 @@ app.post("/pokemonzukan/delete-confirm/:number", (req, res) => {
   pokemon.splice(number, 1);
   console.log("削除を実行しました");
   res.redirect('/pokemonzukan');
+});
+// 最強剣
+app.get("/saikyouken", (req, res) => {
+  // 本来ならここにDBとのやり取りが入る
+  res.render('saikyouken', {data: saikyou} );
+});
+
+// Create
+app.get("/saikyouken/create", (req, res) => {
+  res.redirect('/public/saikyouken_new.html');
+});
+
+// Read
+app.get("/saikyouken/:number", (req, res) => {
+  // 本来ならここにDBとのやり取りが入る
+  const number = req.params.number;
+  const detail = saikyou[ number ];
+  res.render('saikyouken_detail', {id: number, data: detail} );
+});
+
+//edit
+app.get("/saikyouken/edit/:number", (req, res) => {
+  // 本来ならここにDBとのやり取りが入る
+  const number = req.params.number;
+  const detail = saikyou[ number ];
+  res.render('saikyouken_edit', {id: number, data: detail} );
+});
+
+// Update
+app.post("/saikyouken/update/:number", (req, res) => {
+  // 本来は変更する番号が存在するか，各項目が正しいか厳重にチェックする
+  // 本来ならここにDBとのやり取りが入る
+  saikyou[req.params.number].code = req.body.name;
+  saikyou[req.params.number].name = req.body.level;
+  saikyou[req.params.number].bunrui = req.body.Atk;
+  saikyou[req.params.number].type = req.body.Mat;
+  saikyou[req.params.number].takasa = req.body.Pow;
+  saikyou[req.params.number].omosa = req.body.Int;
+  saikyou[req.params.number].setumei = req.body.Spd;
+  saikyou[req.params.number].setumei = req.body.Vit;
+  saikyou[req.params.number].setumei = req.body.Luk;
+  saikyou[req.params.number].setumei = req.body.setumei;
+  saikyou[req.params.number].setumei = req.body.sozai;
+  console.log( saikyou );
+  res.redirect('/saikyouken' );
+});
+
+app.post("/saikyouken/add", (req, res) => {
+  let name = req.body.name;
+  let level = req.body.level;
+  let Atk = req.body.Atk;
+  let Mat = req.body.Mat;
+  let Pow = req.body.Pow;
+  let Int = req.body.Int;
+  let Spd = req.body.Spd;
+  let Vit = req.body.Vit;
+  let Luk = req.body.Luk;
+  let sozai = req.body.sozai;
+  let setumei = req.body.setumei;
+  let id = saikyouken.length + 1;
+  let newdata = { 
+    id: id, 
+    name: name, 
+    level: level, 
+    Atk: Atk, 
+    Mat: Mat, 
+    Pow: Pow, 
+    Int: Int, 
+    Spd: Spd, 
+    Vit: Vit, 
+    Luk: Luk, 
+    sozai: sozai,
+    setumei: setumei
+  };
+  saikyouken.push( newdata );
+  res.render('saikyouken', { data: saikyouken });
+});
+
+app.get("/saikyouken/delete/:number", (req, res) => {
+  const number = req.params.number;
+  const detail = saikyouken[number]; 
+  res.render('saikyouken_delete', { id: number, data: detail });
+});
+
+app.post("/saikyouken/delete-confirm/:number", (req, res) => {
+  const number = req.params.number;
+  saikyouken.splice(number, 1);
+  console.log("削除を実行しました");
+  res.redirect('/saikyouken');
 });
 
 app.get("/hello1", (req, res) => {

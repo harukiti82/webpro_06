@@ -1,0 +1,27 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= data.name %></title>
+</head>
+<body>
+  <h2><%= data.name %>の編集</h2>
+  <form action="/saikyouken/update/<%= data.id - 1 %>" method="POST">
+    <table>
+      <tr><th>項目</th><th>データ</th></tr>
+      <tr><td>名前</td><td><input type="text" name="name" value="<%= data.name %>"></td></tr>
+      <tr><td>レベル制限</td><td><input type="text" name="level" value="<%= data.level %>">~</td></tr>
+      <tr><td>ATKの数値</td><td><input type="text" name="Atk" value="<%= data.Atk %>"></td></tr>
+      <tr><td>INTの数値</td><td><input type="text" name="Int" value="<%= data.Int %>"></td></tr>
+      <tr><td>POWの数値</td><td><input type="text" name="Pow" value="<%= data.Pow %>"></td></tr>
+      <tr><td>SPDの数値</td><td><input type="text" name="Spd" value="<%= data.Spd %>"></td></tr>
+      <tr><td>VITの数値</td><td><input type="text" name="Vit" value="<%= data.Vit %>"></td></tr>
+      <tr><td>LUKの数値</td><td><input type="text" name="Luk" value="<%= data.Luk %>"></td></tr>
+      <tr><td>説明</td><td><input type="text" name="setumei" value="<%= data.setumei %>"></td></tr>
+      <tr><td>作成するのに必要な素材</td><td><input type="text" name="sozai" value="<%= data.sozai %>"></td></tr>
+    </table>
+    <input type="submit" value="登録">
+  </form>
+  <a href="/saikyouken/">最強剣一覧に戻る</a>
+</body>
+</html>

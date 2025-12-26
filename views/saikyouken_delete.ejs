@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>削除の確認 - <%= data.name %></title>
+</head>
+<body>
+    <h2>この武器を削除しますか？</h2>
+    <table>
+        <tr><th>項目</th><th>データ</th></tr>
+        <tr><td>名前</td><td><%= data.name %></td></tr>
+        <tr><td>レベル制限</td><td><%= data.level %></td></tr>
+    </table>
+
+    <form action="/saikyouken/delete-confirm/<%= id %>" method="POST">
+        <button type="submit" style="color: red;">本当に削除する</button>
+        <a href="/saikyouken">最強剣一覧に戻る</a>
+    </form>
+</body>
+</html>
