@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title><%= data.name %></title>
+  <link rel="stylesheet" href="/public/style.css">
 </head>
 <body>
   <h2><%= data.name %>の詳細</h2>
@@ -12,13 +13,13 @@
     <tr><td>図鑑番号</td><td><%= data.code %></td></tr>
     <tr><td>ポケモン名</td><td><%= data.name %></td></tr>
     <tr><td>分類</td><td><%= data.bunrui %></td></tr>
-    <tr><td>タイプ</td><td><%= data.type %></td></tr>
+    <tr><td>タイプ</td><td><% let types = data.type.split(',') %><% for( let t of types ) { %><span class="type-badge type-<%= t.trim() %>"><%= t.trim() %></span> <% } %></td></tr>
     <tr><td>高さ</td><td><%= data.takasa %>m</td></tr>
     <tr><td>重さ</td><td><%= data.omosa %>kg</td></tr>
     <tr><td>説明</td><td><%= data.setumei %></td></tr>
   </table>
-  <a href="/pokemonzukan/edit/<%= id %>">編集</a>
-  <a href="/pokemonzukan">図鑑一覧に戻る</a>
-  <a href="/pokemonzukan/delete/<%= id %>">削除</a>
+  <a href="/pokemonzukan/edit/<%= id %>" class="btn btn-edit">編集</a>
+  <a href="/pokemonzukan" class="btn btn-back">図鑑一覧に戻る</a>
+  <a href="/pokemonzukan/delete/<%= id %>" class="btn btn-delete">削除</a>
 </body>
 </html>

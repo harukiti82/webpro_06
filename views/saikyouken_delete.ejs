@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>削除の確認 - <%= data.name %></title>
+    <link rel="stylesheet" href="/public/style.css">
 </head>
 <body>
     <h2>この武器を削除しますか？</h2>
@@ -13,8 +14,8 @@
     </table>
 
     <form action="/saikyouken/delete-confirm/<%= id %>" method="POST">
-        <button type="submit" style="color: red;">本当に削除する</button>
-        <a href="/saikyouken">最強剣一覧に戻る</a>
+        <button type="submit" class="btn btn-delete">本当に削除する</button>
+        <a href="/saikyouken" class="btn btn-back">最強剣一覧に戻る</a>
     </form>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title><%= data.name %></title>
+  <link rel="stylesheet" href="/public/style.css">
 </head>
 <body>
   <h2><%= data.name %>の詳細</h2>
@@ -25,8 +26,8 @@
           <% } %>
         </ul></td></tr>
   </table>
-  <a href="/saikyouken/edit/<%= id %>">編集</a>
-  <a href="/saikyouken">最強剣一覧に戻る</a>
-  <a href="/saikyouken/delete/<%= id %>">削除</a>
+  <a href="/saikyouken/edit/<%= id %>" class="btn btn-edit">編集</a>
+  <a href="/saikyouken" class="btn btn-back">最強剣一覧に戻る</a>
+  <a href="/saikyouken/delete/<%= id %>" class="btn btn-delete">削除</a>
 </body>
 </html>

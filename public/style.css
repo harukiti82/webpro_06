@@ -1,0 +1,72 @@
+/* public/style.css */
+
+/* 1. 全体の背景と文字 */
+body {
+    background-color: #f0f2f5; 
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #333;
+    padding: 20px;
+}
+
+/* 2. 表（テーブル）のデザイン */
+table {
+    width: 100%;
+    max-width: 600px;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: #efefef;
+    text-align: left;
+}
+
+/* 3. ボタンの統一デザイン */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-edit { background-color: #3498db; color: white; } /* 編集は青 */
+.btn-back { background-color: #95a5a6; color: white; } /* 戻るはグレー */
+.btn-delete { background-color: #e74c3c; color: white; } /* 削除は赤 */
+.btn-add { background-color: #2ecc71; color: white; } /* 追加は緑 */
+
+/* 4. タイプ別の色バッジ*/
+.type-badge {
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: white;
+    font-size: 0.8em;
+}
+.type-炎 { background-color: #ff4422; }
+.type-水 { background-color: #3399ff; }
+.type-草 { background-color: #77cc55; }
+.type-ノーマル { background-color: #aaaa99; }
+.type-電気 { background-color: #ffcc33; }
+.type-氷 { background-color: #66ccff; }
+.type-格闘 { background-color: #bb5544; }
+.type-毒 { background-color: #aa5599; }
+.type-地面 { background-color: #cd8827; }
+.type-飛行 { background-color: #77aaff; }
+.type-エスパー { background-color: #ff5599; }
+.type-虫 { background-color: #aabb22; }
+.type-岩 { background-color: #bbaa66; }
+.type-ゴースト { background-color: #6666bb; }
+.type-ドラゴン { background-color: #7766ee; }
+.type-悪 { background-color: #775544; }
+.type-鋼 { background-color: #aaaabb; }
+.type-フェアリー { background-color: #ff77ee; }
