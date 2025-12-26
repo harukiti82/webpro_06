@@ -14,10 +14,10 @@
     <tr><td>装備名</td><td><%= data.name %></td></tr>
     <tr><td>スキル名</td><td><%= data.skill_name %></td></tr>
     <tr><td>スキルの効果</td><td><ul><% let effectList = data.skill.split(',') %><% for( let item of effectList ) { %><li><%= item %></li><% } %></ul></td></tr>
-    <tr><td>最小効果時間</td><td><%= data.time_min %></td></tr>
-    <tr><td>最大効果時間</td><td><%= data.time_max %></td></tr>
+    <tr><td>最小効果時間</td><td><%= data.time_min %>秒</td></tr>
+    <tr><td>最大効果時間</td><td><%= data.time_max %>秒</td></tr>
     <tr><td>消費SP</td><td><%= data.sp %></td></tr>
-    <tr><td>再使用時間</td><td><%= data.recast %></td></tr>
+    <tr><td>再使用時間</td><td><%= data.recast %>分</td></tr>
   </table>
   <a href="/hane/edit/<%= id %>" class="btn btn-edit">編集</a>
   <a href="/hane" class="btn btn-back">特殊羽一覧に戻る</a>
