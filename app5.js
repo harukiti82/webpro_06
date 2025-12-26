@@ -26,16 +26,16 @@ let station2 = [
 ];
 
 let pokemon = [
-  { id:1, code:37, name:"ロコン",  bunrui:"きつねポケモン", type:"炎", takasa:0.6, omosa:9.9, setumei:"自分より強い相手に襲われると傷ついたふりをして惑わせその隙に逃げてしまう。" },
-  { id:2, code:56, name:"マンキー",  bunrui:"ぶたざるポケモン", type:"格闘", takasa:0.5, omosa:28.0, setumei:"木の上で群れを作って暮らす。群れからはぐれたマンキーは寂しくてすぐに怒り出す。" },
-  { id:3, code:79, name:"ヤドン",  bunrui:"まぬけポケモン", type:"エスパー，水", takasa:1.2, omosa:36.0, setumei:"動きが鈍く間抜け。叩かれても5秒経ってから痛さを感じるほどだ。" },
-  { id:4, code:83, name:"カモネギ",  bunrui:"かもがるポケモン", type:"ノーマル，飛行", takasa:0.8, omosa:15.0, setumei:"クキがなくなると生きていけない。だからクキを狙う相手とは命懸けで戦うのだ。" },
-  { id:5, code:100, name:"ビリリダマ",  bunrui:"ボールポケモン", type:"電気", takasa:0.5, omosa:10.4, setumei:"転がって移動するので地面がデコボコだとショックで爆発してしまう。" },
-  { id:6, code:101, name:"マルマイン",  bunrui:"ボールポケモン", type:"ノーマル，飛行", takasa:1.2, omosa:66.6, setumei:"電気エネルギーを溜め込むほど高速で動けるようになるがその分爆発しやすい。" },
-  { id:7, code:111, name:"サイホーン",  bunrui:"とげとげポケモン", type:"地面，岩", takasa:1.0, omosa:115.0, setumei:"半径10キロメートルの範囲を縄張りにしているが忘れてしまうらしい。" },
-  { id:8, code:129, name:"コイキング",  bunrui:"さかなポケモン", type:"水", takasa:0.9, omosa:10.0, setumei:"力のない情けないポケモン。たまに高く飛び跳ねても2メートルを越すのがやっとだ。" },
-  { id:9, code:132, name:"メタモン",  bunrui:"へんしんポケモン", type:"ノーマル", takasa:0.3, omosa:4.0, setumei:"変身は完璧なのだが笑わされて力が抜けると変身は解けてしまう" },
-  { id:10, code:129, name:"コイキング",  bunrui:"さかなポケモン", type:"水", takasa:0.9, omosa:10.0, setumei:"力のない情けないポケモン。たまに高く飛び跳ねても2メートルを越すのがやっとだ。" },
+  { id:1, code:37, name:"ロコン",  bunrui:"きつねポケモン", type:"炎", takasa:0.6, omosa:9.9, setumei:"自分より強い相手に襲われると傷ついたふりをして惑わせその隙に逃げてしまう。" , image:"ロコン.png" },
+  { id:2, code:56, name:"マンキー",  bunrui:"ぶたざるポケモン", type:"格闘", takasa:0.5, omosa:28.0, setumei:"木の上で群れを作って暮らす。群れからはぐれたマンキーは寂しくてすぐに怒り出す。", image:"マンキー.png" },
+  { id:3, code:79, name:"ヤドン",  bunrui:"まぬけポケモン", type:"エスパー，水", takasa:1.2, omosa:36.0, setumei:"動きが鈍く間抜け。叩かれても5秒経ってから痛さを感じるほどだ。", image:"ヤドン.png" },
+  { id:4, code:83, name:"カモネギ",  bunrui:"かもがるポケモン", type:"ノーマル，飛行", takasa:0.8, omosa:15.0, setumei:"クキがなくなると生きていけない。だからクキを狙う相手とは命懸けで戦うのだ。", image:"カモネギ.png" },
+  { id:5, code:100, name:"ビリリダマ",  bunrui:"ボールポケモン", type:"電気", takasa:0.5, omosa:10.4, setumei:"転がって移動するので地面がデコボコだとショックで爆発してしまう。", image:"ビリリダマ.png" },
+  { id:6, code:101, name:"マルマイン",  bunrui:"ボールポケモン", type:"ノーマル，飛行", takasa:1.2, omosa:66.6, setumei:"電気エネルギーを溜め込むほど高速で動けるようになるがその分爆発しやすい。", image:"マルマイン.png" },
+  { id:7, code:111, name:"サイホーン",  bunrui:"とげとげポケモン", type:"地面，岩", takasa:1.0, omosa:115.0, setumei:"半径10キロメートルの範囲を縄張りにしているが忘れてしまうらしい。", image:"サイホーン.png" },
+  { id:8, code:129, name:"コイキング",  bunrui:"さかなポケモン", type:"水", takasa:0.9, omosa:10.0, setumei:"力のない情けないポケモン。たまに高く飛び跳ねても2メートルを越すのがやっとだ。", image:"コイキング.png" },
+  { id:9, code:132, name:"メタモン",  bunrui:"へんしんポケモン", type:"ノーマル", takasa:0.3, omosa:4.0, setumei:"変身は完璧なのだが笑わされて力が抜けると変身は解けてしまう", image:"メタモン.png" },
+  { id:10, code:474, name:"ポリゴンZ",  bunrui:"バーチャルポケモン", type:"ノーマル", takasa:0.9, omosa:34.0, setumei:"さらに優れたポケモンを目指し追加したプログラムに不具合があったらしく動きがおかしい。", image:"ポリゴンZ.png" },
 ];
 let saikyou = [
   { id:1, name:"霊刀・レイゲンノタチ",  level:"76", Atk:380, Mat:0, Pow:17, Int:12, Spd:0, Vit:0, Luk:0, setumei:"強力な霊力を纏い，魂をも斬るとされる霊刀。持つ者に合わせた重さになる。", sozai:"アメノハバキリ×1,呪われた刃×40,墓守の宝珠×14" },
