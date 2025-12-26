@@ -1,0 +1,25 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= data.name %></title>
+  <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+  <h2><%= data.name %>の編集</h2>
+  <form action="/hane/update/<%= data.id - 1 %>" method="POST">
+    <table>
+      <tr><th>項目</th><th>データ</th></tr>
+      <tr><td>装備名</td><td><input type="text" name="name" value="<%= data.name %>"></td></tr>
+      <tr><td>スキル名</td><td><input type="text" name="skill_name" value="<%= data.skill_name %>"></td></tr>
+      <tr><td>スキルの効果</td><td><input type="text" name="skill" value="<%= data.skill %>"></td></tr>
+      <tr><td>最小効果時間</td><td><input type="text" name="time_min" value="<%= data.time_min %>"></td></tr>
+      <tr><td>最大効果時間</td><td><input type="text" name="time_max" value="<%= data.time_max %>"></td></tr>
+      <tr><td>消費SP</td><td><input type="text" name="sp" value="<%= data.sp %>"></td></tr>
+      <tr><td>再使用時間</td><td><input type="text" name="recast" value="<%= data.recast %>"></td></tr>
+    </table>
+    <input type="submit" values="登録">
+  </form>
+  <a href="/hane/" class="btn btn-back">特殊羽一覧に戻る</a>
+</body>
+</html>

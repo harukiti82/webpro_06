@@ -50,6 +50,18 @@ let saikyou = [
   { id:10, name:"真・神律剣マグナステラ(緑)",  level:"85", Atk:0, Mat:777, Pow:30, Int:60, Spd:0, Vit:50, Luk:0, setumei:"神を律する偉大な剣。真の力を手に入れた剣は世界に変革をもたらす強大な力を持つ。", sozai:"救世剣イデアフリード(青or緑)×1,ファントムメモリア×250,ミラージュメモリア×250,ファントムペリドット×250,メモリアペリドット×250,ファントムゼーレ×25.ミラージュゼーレ×25,夢幻のマリス×40,夢幻のレーヴ×40" },
 ];
 
+let tyoko = [
+  { id:1, image1:"エル羽.png", image2:"エル.png", name:"チョコエルウイングEX", skill_name:"大天使の加護", skill:"MAXHP／MAXSP+400％,POW／INT／SPD／VIT／LUK+20％,ATK／DEF／MAT／MDF+20％,HP自動回復／SP自動回復+100％,ノックバック無効,状態異常解除／防止（呪い含む）", time_min:100, time_max:300, sp:1000, recast:15 },
+  { id:2, image1:"ジュダ羽.png", image2:"ジュダ.png", name:"チョコジュダウイングEX", skill_name:"大悪魔の闇翼", skill:"敵の攻撃やスキルの対象にならず無敵状態で戦闘することができる", time_min:5, time_max:9, sp:1000, recast:15 },
+  { id:3, image1:"レトロ羽.png", image2:"レトロ.png", name:"チョコレトロウィングEX", skill_name:"スチームパンカー", skill:"敵の防御力を一定割合減算してダメージ付与,カウンター／回避／吹き飛ばし／引き寄せ防止,状態異常解除／防止（呪い含む）,与ダメージ100％ドレイン（スキル攻撃含む)", time_min:60, time_max:300, sp:1000, recast:15 },
+  { id:4, image1:"シラ羽.png", image2:"シラ.png", name:"チョコシラ妖尾EX", skill_name:"大妖怪の通力", skill:"スキル詠唱時間を75％短縮,スキル硬直時間を75％短縮,くいしばり,状態異常解除／防止（呪い含む）,消費SP変動,MOV+100", time_min:60, time_max:300, sp:1000, recast:15 },
+  { id:5, image1:"フィス羽.png", image2:"フィス.png", name:"チョコフィスカースEX", skill_name:"邪神の呪詛", skill:"攻撃をヒットさせるほどATKとMATが増加,自動で攻撃を行う霊獣を召喚,敵の通常攻撃を回避した際に反撃,敵をスキルで攻撃した際に追撃,LUK30％上昇,状態異常解除／防止（呪い含む）", time_min:60, time_max:300, sp:1000, recast:15 },
+  { id:6, image1:"ベネ羽.png", image2:"ベネ.png", name:"チョコベネイージスEX", skill_name:"祝福の蒼盾", skill:"攻撃したモンスターにATK/MAT30％ダウンの状態異常を一定時間付与,受けた攻撃回数に応じてマップ内プレイヤーのDEF/MDF上昇&マップ内モンスターのDEF/MDFダウン,一定範囲内にいる味方プレイヤーに自分の回復の50％を付与,『祝福の蒼盾』発動者が使用した回復アイテムの効果を3倍にする,VITを30％上昇,状態異常解除／防止（呪い含む）", time_min:60, time_max:300, sp:1000, recast:15 },
+  { id:7, image1:"シナ羽.png", image2:"シナ.png", name:"チョコマシーナフェイトEX", skill_name:"CODE：焔摩", skill:"職業スキルの再使用時間を初期化,ENを持つエナジーゲージが付与される,スキルクリティカル確率+30%（ペット・霊獣等も含む）,通常攻撃クリティカル確率+30%（ペット・霊獣等も含む）,状態異常解除／防止（呪い含む）", time_min:90, time_max:90, sp:1000, recast:10 },
+  { id:8, image1:"シネ羽.png", image2:"シネ.png", name:"チョコマシーネフェイトEX", skill_name:"CODE：羅刹", skill:"職業スキルの再使用時間を初期化,ENを持つエナジーゲージが付与される,スキル再使用時間、スキル詠唱時間およびスキル硬直時間を50%短縮,スキルチャージ時間を75%短縮,状態異常解除／防止（呪い含む）", time_min:90, time_max:90, sp:1000, recast:10 },
+  { id:9, image1:"リア羽.png", image2:"リア.png", name:"チョコリアパヴォーネEX", skill_name:"明王の鼓舞・陽", skill:"敵にダメージを与えた際、ダメージが10%増加,スキル再使用時間を50％短縮,スキル詠唱時間及びスキル硬直時間を30%短縮,SPD30%上昇,MAXHP+200%,HP自動回復+50%,SP自動回復+50%,状態異常解除／防止（呪い含む）", time_min:60, time_max:300, sp:1000, recast:15 },
+  { id:10, image1:"リエ羽.png", image2:"リエ.png", name:"チョコリエパヴォーネEX", skill_name:"明王の守護・陰", skill:"敵からダメージを受けた際、受けるダメージを30%軽減,スキル再使用時間を50％短縮,スキル詠唱時間及びスキル硬直時間を30%短縮,SPD30%上昇,MAXHP+200%,HP自動回復+50%,SP自動回復+50%,状態異常解除／防止（呪い含む）", time_min:60, time_max:300, sp:1000, recast:15 },
+];
 
 app.get("/keiyo2", (req, res) => {
   // 本来ならここにDBとのやり取りが入る
@@ -275,6 +287,88 @@ app.post("/saikyouken/delete-confirm/:number", (req, res) => {
   console.log("削除を実行しました");
   res.redirect('/saikyouken');
 });
+
+// 羽根
+app.get("/hane", (req, res) => {
+  // 本来ならここにDBとのやり取りが入る
+  res.render('hane', {data: tyoko} );
+});
+
+// Create
+app.get("/hane/create", (req, res) => {
+  res.redirect('/public/hane_new.html');
+});
+
+// Read
+app.get("/hane/:number", (req, res) => {
+  // 本来ならここにDBとのやり取りが入る
+  const number = req.params.number;
+  const detail = tyoko[ number ];
+  res.render('hane_detail', {id: number, data: detail} );
+});
+
+//edit
+app.get("/hane/edit/:number", (req, res) => {
+  // 本来ならここにDBとのやり取りが入る
+  const number = req.params.number;
+  const detail = tyoko[ number ];
+  res.render('hane_edit', {id: number, data: detail} );
+});
+
+// Update
+app.post("/hane/update/:number", (req, res) => {
+  // 本来は変更する番号が存在するか，各項目が正しいか厳重にチェックする
+  // 本来ならここにDBとのやり取りが入る
+  tyoko[req.params.number].image1 = req.body.image1;
+  tyoko[req.params.number].image2 = req.body.image2;
+  tyoko[req.params.number].name = req.body.name;
+  tyoko[req.params.number].skill_name = req.body.skill_name;
+  tyoko[req.params.number].skill = req.body.skill;
+  tyoko[req.params.number].time_min = req.body.time_min;
+  tyoko[req.params.number].time_max = req.body.time_max;
+  tyoko[req.params.number].sp = req.body.sp;
+  tyoko[req.params.number].recast = req.body.recast;
+  console.log( tyoko );
+  res.redirect('/hane' );
+});
+
+app.post("/hane/add", (req, res) => {
+  let name = req.body.name;
+  let skill_name = req.body.skill_name;
+  let skill = req.body.skill;
+  let time_min = req.body.time_min;
+  let time_max = req.body.time_max;
+  let sp = req.body.sp;
+  let recast = req.body.recast;
+  let id = tyoko.length + 1;
+  let newdata = { 
+    id: id, 
+    name: name,
+    skill_name: skill_name,
+    skill: skill,
+    time_min: time_min,
+    time_max: time_max,
+    sp: sp,
+    recast: recast
+  };
+  tyoko.push( newdata );
+  res.render('hane', { data: tyoko });
+});
+
+app.get("/hane/delete/:number", (req, res) => {
+  const number = req.params.number;
+  const detail = tyoko[number]; 
+  res.render('hane_delete', { id: number, data: detail });
+});
+
+app.post("/hane/delete-confirm/:number", (req, res) => {
+  const number = req.params.number;
+  tyoko.splice(number, 1);
+  console.log("削除を実行しました");
+  res.redirect('/hane');
+});
+
+
 
 app.get("/hello1", (req, res) => {
   const message1 = "Hello world";

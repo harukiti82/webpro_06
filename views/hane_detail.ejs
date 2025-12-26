@@ -1,0 +1,26 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= data.name %></title>
+  <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+  <h2><%= data.name %>の詳細</h2>
+  <tr><td><% if (data.image2) { %><img src="/public/<%= data.image2 %>" width="150"><% } %></td></tr>
+
+  <table>
+    <tr><th>項目</th><th>データ</th></tr>
+    <tr><td>装備名</td><td><%= data.name %></td></tr>
+    <tr><td>スキル名</td><td><%= data.skill_name %></td></tr>
+    <tr><td>スキルの効果</td><td><ul><% let effectList = data.skill.split(',') %><% for( let item of effectList ) { %><li><%= item %></li><% } %></ul></td></tr>
+    <tr><td>最小効果時間</td><td><%= data.time_min %></td></tr>
+    <tr><td>最大効果時間</td><td><%= data.time_max %></td></tr>
+    <tr><td>消費SP</td><td><%= data.sp %></td></tr>
+    <tr><td>再使用時間</td><td><%= data.recast %></td></tr>
+  </table>
+  <a href="/hane/edit/<%= id %>" class="btn btn-edit">編集</a>
+  <a href="/hane" class="btn btn-back">特殊羽一覧に戻る</a>
+  <a href="/hane/delete/<%= id %>" class="btn btn-delete">削除</a>
+</body>
+</html>

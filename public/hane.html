@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>特殊羽の追加</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <h2>追加したい特殊羽のデータを書いてください</h2>
+    <form action="/hane/add" method="POST">
+        <input type="text" name="name" required>
+        <label for="name">装備名:</label><br>
+        <input type="text" name="skill_name" required>
+        <label for="skill_name">スキル名:</label><br>
+        <input type="text" name="skill" required>
+        <label for="skill">スキルの効果:</label><br>
+        <input type="text" name="time_min" required>
+        <label for="time_min">最小効果時間:</label><br>
+        <input type="text" name="time_max" required>
+        <label for="time_max">最大効果時間:</label><br>
+        <input type="text" name="sp" required>
+        <label for="sp">消費SP:</label><br>
+        <input type="text" name="recast" required>
+        <label for="recast">再使用時間:</label><br>
+        <input type="submit" values="登録">
+    </form>
+    <a href="/hane/" class="btn btn-back">図鑑一覧に戻る</a>
+</body>
+</html>

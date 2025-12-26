@@ -1,0 +1,21 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>チョコットランド特殊羽一覧</title>
+  <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+  <h2>チョコットランド特殊羽一覧</h2>
+  <table>
+    <tr><th>装備アイコン</th><th>名前</th><th>スキル名</th></tr>
+      <% let number = 0 %>
+      <% for( let row of data ) { %>
+        <tr><td><% if (row.image1) { %><img src="/public/<%= row.image1 %>" width="100"><% } %></td>
+        <td><a href="/hane/<%= row.id-1 %>"><%= row.name %></a></td>
+        <td><%= row.skill_name %></td>
+      <% } %>
+  </table>
+  <a href="/hane/create" class="btn btn-add">追加</a>
+</body>
+</html>

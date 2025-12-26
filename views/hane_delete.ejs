@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>削除の確認 - <%= data.name %></title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <h2>この装備を削除しますか？</h2>
+    <table>
+        <tr><th>項目</th><th>データ</th></tr>
+        <tr><td>名前</td><td><%= data.name %></td></tr>
+        <tr><td>スキルの効果</td><td><%= data.skill %></td></tr>
+    </table>
+
+    <form action="/hane/delete-confirm/<%= id %>" method="POST">
+        <button type="submit" class="btn btn-delete">本当に削除する</button>
+        <a href="/hane" class="btn btn-back">特殊羽一覧に戻る</a>
+    </form>
+</body>
+</html>
