@@ -8,12 +8,12 @@
 <body>
   <h2>図鑑説明が残念なポケモン図鑑</h2>
   <table>
-    <tr><th>No.</th><th>分類</th><th>ポケモン名</th></tr>
+    <tr><th>ドット絵アイコン</th><th>No.</th><th>分類</th><th>ポケモン名</th></tr>
       <% let number = 0 %>
       <% for( let row of data ) { %>
 
-        <tr><td><%= row.code %></td>
-        <td><%= row.bunrui %></td>
+        <tr><td><% if (row.dot) { %><img src="/public/<%= row.dot %>" width="100"><% } %></td>
+        <td><%= row.code %></td><td><%= row.bunrui %></td>
         <td><a href="/pokemonzukan/<%= number %>"><%= row.name %></a></td></tr>
         <% number += 1 %>
       <% } %>

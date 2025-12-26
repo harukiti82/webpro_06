@@ -7,7 +7,9 @@
 </head>
 <body>
   <h2><%= data.name %>の詳細</h2>
-  <tr><td>すがた</td><td><% if (data.image) { %><img src="/public/<%= data.image %>" width="150"><% } %></td></tr>
+  <div class="pokemon-display">
+    <p>すがた</p>
+    <% if (data.image) { %><img src="/public/<%= data.image %>" width="250" alt="<%= data.name %>"><% } %></div>
   <table>
     <tr><th>項目</th><th>データ</th></tr>
     <tr><td>図鑑番号</td><td><%= data.code %></td></tr>

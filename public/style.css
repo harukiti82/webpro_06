@@ -2,7 +2,13 @@ body {
     background-color: #f0f2f5; 
     font-family: "Helvetica Neue", Arial, sans-serif;
     color: #333;
-    padding: 20px;
+    padding: 30px;
+    margin: 0;
+}
+h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
 }
 table {
     width: 100%;
@@ -13,6 +19,8 @@ table {
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
     margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 th, td {
@@ -22,7 +30,7 @@ th, td {
 
 th {
     background-color: #efefef;
-    text-align: left;
+    text-align: center;
 }
 .btn {
     display: inline-block;
@@ -62,3 +70,20 @@ th {
 .type-悪 { background-color: #775544; }
 .type-鋼 { background-color: #aaaabb; }
 .type-フェアリー { background-color: #ff77ee; }
+
+.pokemon-display {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.pokemon-display p {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.pokemon-display img {
+  display: block;
+  margin: 0 auto;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+}
