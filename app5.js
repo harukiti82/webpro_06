@@ -233,23 +233,20 @@ app.get("/saikyouken/edit/:number", (req, res) => {
 
 // Update
 app.post("/saikyouken/update/:number", (req, res) => {
-  // 本来は変更する番号が存在するか，各項目が正しいか厳重にチェックする
-  // 本来ならここにDBとのやり取りが入る
-  saikyou[req.params.number].code = req.body.name;
-  saikyou[req.params.number].name = req.body.level;
-  saikyou[req.params.number].bunrui = req.body.Atk;
-  saikyou[req.params.number].type = req.body.Mat;
-  saikyou[req.params.number].takasa = req.body.Pow;
-  saikyou[req.params.number].omosa = req.body.Int;
-  saikyou[req.params.number].setumei = req.body.Spd;
-  saikyou[req.params.number].setumei = req.body.Vit;
-  saikyou[req.params.number].setumei = req.body.Luk;
-  saikyou[req.params.number].setumei = req.body.setumei;
-  saikyou[req.params.number].setumei = req.body.sozai;
-  console.log( saikyou );
-  res.redirect('/saikyouken' );
+  const i = req.params.number;
+  saikyou[i].name = req.body.name;
+  saikyou[i].level = req.body.level;
+  saikyou[i].Atk = req.body.Atk;
+  saikyou[i].Mat = req.body.Mat;
+  saikyou[i].Pow = req.body.Pow;
+  saikyou[i].Int = req.body.Int;
+  saikyou[i].Spd = req.body.Spd;
+  saikyou[i].Vit = req.body.Vit;
+  saikyou[i].Luk = req.body.Luk;
+  saikyou[i].setumei = req.body.setumei;
+  saikyou[i].sozai = req.body.sozai;
+  res.redirect('/saikyouken');
 });
-
 app.post("/saikyouken/add", (req, res) => {
   let name = req.body.name;
   let level = req.body.level;
