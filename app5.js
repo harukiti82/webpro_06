@@ -259,7 +259,7 @@ app.post("/saikyouken/add", (req, res) => {
   let Luk = req.body.Luk;
   let sozai = req.body.sozai;
   let setumei = req.body.setumei;
-  let id = saikyouken.length + 1;
+  let id = saikyou.length + 1;
   let newdata = { 
     id: id, 
     name: name, 
@@ -274,7 +274,7 @@ app.post("/saikyouken/add", (req, res) => {
     sozai: sozai,
     setumei: setumei
   };
-  saikyouken.push( newdata );
+  saikyou.push( newdata );
   res.render('saikyouken', { data: saikyouken });
 });
 
@@ -286,7 +286,7 @@ app.get("/saikyouken/delete/:number", (req, res) => {
 
 app.post("/saikyouken/delete-confirm/:number", (req, res) => {
   const number = req.params.number;
-  saikyouken.splice(number, 1);
+  saikyou.splice(number, 1);
   console.log("削除を実行しました");
   res.redirect('/saikyouken');
 });
