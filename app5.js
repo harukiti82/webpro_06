@@ -123,7 +123,7 @@ app.get("/pokemonzukan", (req, res) => {
 
 // Create
 app.get("/pokemonzukan/create", (req, res) => {
-  res.redirect('/public/pokemonzukan_new.html');
+  res.render('pokemonzukan_new');
 });
 
 // Read
@@ -152,12 +152,15 @@ app.post("/pokemonzukan/update/:number", (req, res) => {
   pokemon[req.params.number].code = req.body.code;
   pokemon[req.params.number].name = req.body.name;
   pokemon[req.params.number].bunrui = req.body.bunrui;
-  pokemon[req.params.number].type = req.body.type;
+  pokemon[req.params.number].type = req.body.type1;
+  if (req.body.type2) {
+    pokemon[req.params.number].type += "," + req.body.type2;
+  }
   pokemon[req.params.number].takasa = req.body.takasa;
   pokemon[req.params.number].omosa = req.body.omosa;
   pokemon[req.params.number].setumei = req.body.setumei;
   console.log( pokemon );
-  res.redirect('/pokemonzukan' );
+  res.redirect('/pokemonzukan');
 });
 
 app.post("/pokemonzukan/add", (req, res) => {
@@ -167,7 +170,10 @@ app.post("/pokemonzukan/add", (req, res) => {
   let code = req.body.code;
   let name = req.body.name;
   let bunrui = req.body.bunrui;
-  let type = req.body.type;
+  let type = req.body.type1;
+  if (req.body.type2) {
+    type += "," + req.body.type2;
+  }
   let takasa = req.body.takasa;
   let omosa = req.body.omosa;
   let setumei = req.body.setumei;

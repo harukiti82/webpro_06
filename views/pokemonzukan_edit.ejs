@@ -13,8 +13,10 @@
       <tr><td>図鑑番号</td><td><input type="text" name="code" value="<%= data.code %>"></td></tr>
       <tr><td>ポケモン名</td><td><input type="text" name="name" value="<%= data.name %>"></td></tr>
       <tr><td>分類</td><td><input type="text" name="bunrui" value="<%= data.bunrui %>"></td></tr>
-      <tr><td>タイプ</td><td><input type="text" name="type" value="<%= data.type %>"></td></tr>
-      <tr><td>高さ</td><td><input type="text" name="takasa" value="<%= data.takasa %>"></td></tr>
+      <tr><td>タイプ</td><td><div><strong>タイプ1：</strong><br><% const types = ["ノーマル", "炎", "水", "草", "電気", "氷", "格闘", "毒", "地面", "飛行", "エスパー", "虫", "岩", "ゴースト", "ドラゴン", "悪", "鋼", "フェアリー"]; %><% for(let t of types) { %>
+      <label><input type="radio" name="type1" value="<%= t %>" required> <%= t %></label>
+      <% } %></div><br><div><strong>タイプ2：</strong><br><label><input type="radio" name="type2" value="" checked> なし</label><% for(let t of types) { %>
+      <label><input type="radio" name="type2" value="<%= t %>"> <%= t %></label><% } %></div></td></tr>         <tr><td>高さ</td><td><input type="text" name="takasa" value="<%= data.takasa %>"></td></tr>
       <tr><td>重さ</td><td><input type="text" name="omosa" value="<%= data.omosa %>"></td></tr>
       <tr><td>説明</td><td><input type="text" name="setumei" value="<%= data.setumei %>"></td></tr>
     </table>
