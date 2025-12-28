@@ -275,12 +275,12 @@ app.post("/saikyouken/add", (req, res) => {
     setumei: setumei
   };
   saikyou.push( newdata );
-  res.render('saikyouken', { data: saikyouken });
+  res.render('saikyouken', { data: saikyou });
 });
 
 app.get("/saikyouken/delete/:number", (req, res) => {
   const number = req.params.number;
-  const detail = saikyouken[number]; 
+  const detail = saikyou[number]; 
   res.render('saikyouken_delete', { id: number, data: detail });
 });
 
