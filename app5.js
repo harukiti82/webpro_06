@@ -467,4 +467,6 @@ app.use((req, res) => {
   res.status(404).sendFile(__dirname + '/public/error.html'); 
 });
 
-app.listen(8080, () => console.log("Example app listening on port 8080!"));
+// Azure App Service は PORT 環境変数でポートを注入する。ローカルでは 8080 で動く
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
