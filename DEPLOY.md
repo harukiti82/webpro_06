@@ -1,77 +1,107 @@
-# Azure デプロイ手順（Cyberduck / FTP 方式）
+# Azure デプロイ手順（VM / Ubuntu 方式）
 
-ポケモン図鑑・最強剣・特殊羽リストを Azure App Service で公開する手順。
-アプリ本体は `app5.js`（Express + EJS）。
+ポケモン図鑑・最強剣・特殊羽リストを Azure の仮想マシン（VM）上で公開する手順。
+アプリ本体は `app5.js`（Express + EJS）。3システムすべてこの1本に入っている。
 
-公開URL（作成後）:
-- 図鑑一覧 … `https://<アプリ名>.azurewebsites.net/pokemonzukan`
-- 最強剣一覧 … `https://<アプリ名>.azurewebsites.net/saikyouken`
-- 特殊羽リスト … `https://<アプリ名>.azurewebsites.net/hane`
+公開URL（作成後 / IP直アクセスの場合）:
+- 図鑑一覧 … `http://<VMのパブリックIP>:8080/pokemonzukan`
+- 最強剣一覧 … `http://<VMのパブリックIP>:8080/saikyouken`
+- 特殊羽リスト … `http://<VMのパブリックIP>:8080/hane`
 
 ---
 
-## 1. App Service（Webアプリ）を作る — Azureポータル
+## 1. VM を作る — Azureポータル
 
 1. <https://portal.azure.com> にログイン（Azure for Students サブスクリプション）
-2. 「リソースの作成」→「Web アプリ」
+2. 「リソースの作成」→「仮想マシン」
 3. 設定:
-   - **公開**: コード
-   - **ランタイムスタック**: Node 20 LTS
-   - **OS**: Linux
-   - **地域**: Japan East など
-   - **価格プラン**: **F1（Free）** を選択（学生サブスクで無料）
-   - アプリ名（= URLの一部）を決める
-4. 「確認および作成」→「作成」。数十秒で完成。
+   - **イメージ**: Ubuntu Server 22.04 LTS
+   - **サイズ**: B1s など小さいもの（学生クレジットで十分）
+   - **認証の種類**: SSH 公開キー（推奨。パスワードでも可）
+   - **ユーザー名**: 例 `azureuser`
+   - **受信ポート**: SSH(22) を許可
+4. 「確認および作成」→「作成」。SSHキーを選んだ場合は秘密鍵(.pem)をダウンロードして保管。
+5. 完成後、「概要」で **パブリックIPアドレス** をメモ。
 
-## 2. スタートアップコマンドを設定（重要）
+## 2. アプリ用ポート(8080)を開ける — NSG
 
-node_modules はFTPで上げると遅い（837ファイル）ので、**Azure側で `npm install` させる**。
+- 作成したVM →「ネットワーク」→「受信ポートの規則」→「ポート規則の追加」
+- **宛先ポート範囲: 8080**、プロトコル TCP、アクション 許可 で保存。
+  （80番で公開したい場合は手順6のnginxを使う。その場合は80も開ける）
 
-- 作成したWebアプリ →「設定 > 構成」→「全般設定」タブ
-- **スタートアップ コマンド** に次を入力して保存:
-  ```
-  npm install && npm start
-  ```
-- 保存すると再起動がかかる。
+## 3. SSH でログイン & Node をインストール
 
-## 3. FTPS の接続情報を取得
+```bash
+ssh azureuser@<VMのパブリックIP>          # パスワード認証ならこのまま
+# SSHキー認証なら: ssh -i ダウンロードした鍵.pem azureuser@<IP>
 
-- Webアプリ →「デプロイ > デプロイ センター」→「FTPS 資格情報」タブ
-- 以下3つをメモ:
-  - **FTPS エンドポイント**（`ftps://waws-prod-xxxx.ftp.azurewebsites.windows.net/site/wwwroot` の形）
-  - **ユーザー名**（`<アプリ名>\$<アプリ名>` の形）
-  - **パスワード**
+# Node 20 を NodeSource から入れる（apt 標準版は古いので使わない）
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs git
+node -v   # v20 系が出ればOK
+```
 
-## 4. Cyberduck でアップロード
+## 4. アプリを配置（推奨: git clone）
 
-1. Cyberduck →「新規接続」
-2. プロトコル: **FTP-SSL (Explicit AUTH TLS)**
-3. サーバー: 手順3のエンドポイントのホスト部分（`waws-prod-xxxx.ftp.azurewebsites.windows.net`）
-4. ユーザー名・パスワード: 手順3の値
-5. 接続後、**`/site/wwwroot`** フォルダへ移動
-6. wwwroot 内の既定ファイル（`hostingstart.html` 等）があれば消してよい
-7. 以下を wwwroot 直下にアップロード:
-   - `app5.js`
-   - `package.json`
-   - `package-lock.json`
-   - `views/`（フォルダごと）
-   - `public/`（フォルダごと）
+```bash
+git clone https://github.com/harukiti82/webpro_06.git
+cd webpro_06
+npm install         # express / ejs を取得
+```
 
-   ※ `node_modules/` は **上げない**（手順2でAzureが入れる）。
-   ※ 他の `app2.js〜app8.js` や `*.md`・`*.pdf` は不要。
+> **Cyberduck(SFTP)で上げたい場合**: プロトコル「SFTP」、サーバー `<VMのIP>`、
+> ポート22、ユーザー名 `azureuser`（鍵認証なら鍵を指定）で接続し、
+> ファイル一式を `/home/azureuser/webpro_06` に置く。
+> その後 SSH で `cd webpro_06 && npm install` を実行する。
+> `node_modules` は上げず、VM上で `npm install` する方が速くて確実。
 
-## 5. 起動確認
+## 5. pm2 で常駐起動（再起動後も自動で立ち上がる）
 
-- アップロード後、Webアプリ →「概要」→「再起動」を一度押すと確実。
-- 初回は `npm install` が走るため起動まで1〜2分かかることがある。
-- `https://<アプリ名>.azurewebsites.net/pokemonzukan` を開いて表示されればOK。
-- 真っ白／エラーのときは「ログ ストリーム」（監視 > ログ ストリーム）でエラーを確認。
+```bash
+sudo npm install -g pm2
+PORT=8080 pm2 start app5.js --name webpro   # ポート8080で起動
+pm2 save                                    # 現在の構成を保存
+pm2 startup                                 # 表示されたコマンドをコピペ実行 → OS再起動後も自動起動
+```
+
+動作確認:
+- ブラウザで `http://<VMのIP>:8080/pokemonzukan` を開く。
+- ログ確認は `pm2 logs webpro`、再起動は `pm2 restart webpro`。
+- コード更新時は `git pull && npm install && pm2 restart webpro`。
+
+これで完了。以下は「:8080 なしのキレイなURL(80番)で見せたい」場合のみ。
 
 ---
 
-## 代替案: node_modules も全部FTPで上げる場合
+## 6.（任意）nginx で 80 番ポートに出す
 
-手順2のスタートアップコマンドは設定せず（または `npm start` だけにして）、
-手順4で `node_modules/` も丸ごとアップロードする。
-express/ejs は純JSなのでmacOSで入れたものがLinuxでもそのまま動く。
-ただし837ファイルの転送に時間がかかり、途中で失敗しやすい点に注意。
+`http://<IP>/pokemonzukan` のようにポート番号なしでアクセスしたい場合、
+nginx をリバースプロキシにして 80 → 8080 へ流す。手順2で80番も開けておくこと。
+
+```bash
+sudo apt install -y nginx
+sudo tee /etc/nginx/sites-available/webpro >/dev/null <<'EOF'
+server {
+    listen 80;
+    server_name _;
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+EOF
+sudo ln -sf /etc/nginx/sites-available/webpro /etc/nginx/sites-enabled/webpro
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t && sudo systemctl restart nginx
+```
+
+これで `http://<VMのIP>/pokemonzukan` でアクセスできる。
+
+---
+
+## 補足
+
+- VM を停止(割り当て解除)するとパブリックIPが変わることがある。固定したい場合は
+  ポータルでパブリックIPを「静的」に変更する。
+- アプリは `PORT` 環境変数を見る実装（未指定なら8080）。pm2 起動時に `PORT=8080` を渡している。
