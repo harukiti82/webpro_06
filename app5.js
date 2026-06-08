@@ -1,7 +1,7 @@
 // ============================================================
 // app5.js — Express 製の Web アプリ本体
-//   駅一覧 / ポケモン図鑑 / 最強剣 / 特殊羽 の各一覧と、
-//   別途 React で制作したマインスイーパーを 1 つのサーバーで配信する。
+//   駅一覧 / ポケモン図鑑 / 最強剣 / 特殊羽 の各一覧を
+//   1 つのサーバーで配信する。
 //   Azure VM 上で pm2 により常駐させ、URL でアクセスできるようにしている。
 // ============================================================
 "use strict";
@@ -12,8 +12,6 @@ const app = express();
 app.set('view engine', 'ejs');
 // /public 以下の静的ファイル（画像・CSS・HTML）を配信
 app.use("/public", express.static(__dirname + "/public"));
-// マインスイーパー（Vite ビルド済み静的アプリ）。vite.config の base が /minesweeper/ なのでパスが一致する
-app.use("/minesweeper", express.static(__dirname + "/public/minesweeper"));
 // POST されたフォーム値（application/x-www-form-urlencoded）を req.body で受け取れるようにする
 app.use(express.urlencoded({ extended: true }));
 
@@ -80,7 +78,7 @@ let tyoko = [
   { id:10, image1:"リエ羽.png", image2:"リエ.png", name:"チョコリエパヴォーネEX", skill_name:"明王の守護・陰", skill:"敵からダメージを受けた際、受けるダメージを30%軽減,スキル再使用時間を50％短縮,スキル詠唱時間及びスキル硬直時間を30%短縮,SPD30%上昇,MAXHP+200%,HP自動回復+50%,SP自動回復+50%,状態異常解除／防止（呪い含む）", time_min:60, time_max:300, sp:1000, recast:15 },
 ];
 
-// ===== ホーム画面（各一覧・マインスイーパーへのメニュー） =====
+// ===== ホーム画面（各一覧へのメニュー） =====
 app.get("/", (req, res) => {
   res.render('home');
 });
