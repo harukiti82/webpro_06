@@ -4,6 +4,8 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
+// マインスイーパー（Vite ビルド済み静的アプリ）。vite.config の base が /minesweeper/ なのでパスが一致する
+app.use("/minesweeper", express.static(__dirname + "/public/minesweeper"));
 app.use(express.urlencoded({ extended: true }));
 
 let station = [
@@ -62,6 +64,11 @@ let tyoko = [
   { id:9, image1:"リア羽.png", image2:"リア.png", name:"チョコリアパヴォーネEX", skill_name:"明王の鼓舞・陽", skill:"敵にダメージを与えた際、ダメージが10%増加,スキル再使用時間を50％短縮,スキル詠唱時間及びスキル硬直時間を30%短縮,SPD30%上昇,MAXHP+200%,HP自動回復+50%,SP自動回復+50%,状態異常解除／防止（呪い含む）", time_min:60, time_max:300, sp:1000, recast:15 },
   { id:10, image1:"リエ羽.png", image2:"リエ.png", name:"チョコリエパヴォーネEX", skill_name:"明王の守護・陰", skill:"敵からダメージを受けた際、受けるダメージを30%軽減,スキル再使用時間を50％短縮,スキル詠唱時間及びスキル硬直時間を30%短縮,SPD30%上昇,MAXHP+200%,HP自動回復+50%,SP自動回復+50%,状態異常解除／防止（呪い含む）", time_min:60, time_max:300, sp:1000, recast:15 },
 ];
+
+// ホーム画面（各一覧へのメニュー）
+app.get("/", (req, res) => {
+  res.render('home');
+});
 
 app.get("/keiyo2", (req, res) => {
   // 本来ならここにDBとのやり取りが入る
@@ -467,4 +474,6 @@ app.use((req, res) => {
   res.status(404).sendFile(__dirname + '/public/error.html'); 
 });
 
-app.listen(8080, () => console.log("Example app listening on port 8080!"));
+// Azure App Service は PORT 環境変数でポートを注入する。ローカルでは 8080 で動く
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
