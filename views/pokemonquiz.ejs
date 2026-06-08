@@ -1,0 +1,30 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>残念なポケモン図鑑クイズ</title>
+  <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+  <h2>残念なポケモン図鑑クイズ</h2>
+  <p id="score" class="quiz-score">正解 0 / 出題 0　連続 0</p>
+
+  <div class="quiz-box">
+    <p class="quiz-label">この説明のポケモンは？</p>
+    <p id="setumei" class="quiz-setumei">読み込み中...</p>
+
+    <div id="choices" class="quiz-choices"></div>
+
+    <div id="result" class="quiz-result"></div>
+
+    <button id="next-btn" class="btn btn-add" style="display:none;">次の問題へ</button>
+  </div>
+
+  <div class="quiz-links">
+    <a href="/pokemonzukan" class="btn btn-back">図鑑に戻る</a>
+    <a href="/" class="btn btn-back">ホーム</a>
+  </div>
+
+  <script src="/public/pokemonquiz.js"></script>
+</body>
+</html>
