@@ -1,7 +1,6 @@
 // ============================================================
 //  サーバー側プログラム（本科目レポート用・抜粋）
-//   ポケモン図鑑 / 最強剣 / 特殊羽 の各一覧と、
-//   別途 React で制作したマインスイーパーを 1 つのサーバーで配信する。
+//   ポケモン図鑑 / 最強剣 / 特殊羽 の各一覧を 1 つのサーバーで配信する。
 //   Azure VM 上で pm2 により常駐させ、URL でアクセスできるようにしている。
 //   ※ 本番の app5.js から、本科目に無関係な機能（駅一覧・練習課題）を除いた版。
 // ============================================================
@@ -13,8 +12,6 @@ const app = express();
 app.set('view engine', 'ejs');
 // /public 以下の静的ファイル（画像・CSS・HTML）を配信
 app.use("/public", express.static(__dirname + "/public"));
-// マインスイーパー（Vite ビルド済み静的アプリ）。vite.config の base が /minesweeper/ なのでパスが一致する
-app.use("/minesweeper", express.static(__dirname + "/public/minesweeper"));
 // POST されたフォーム値（application/x-www-form-urlencoded）を req.body で受け取れるようにする
 app.use(express.urlencoded({ extended: true }));
 
@@ -59,7 +56,7 @@ let tyoko = [
   { id:10, image1:"リエ羽.png", image2:"リエ.png", name:"チョコリエパヴォーネEX", skill_name:"明王の守護・陰", skill:"敵からダメージを受けた際、受けるダメージを30%軽減,スキル再使用時間を50％短縮,スキル詠唱時間及びスキル硬直時間を30%短縮,SPD30%上昇,MAXHP+200%,HP自動回復+50%,SP自動回復+50%,状態異常解除／防止（呪い含む）", time_min:60, time_max:300, sp:1000, recast:15 },
 ];
 
-// ===== ホーム画面（各一覧・マインスイーパーへのメニュー） =====
+// ===== ホーム画面（各一覧へのメニュー） =====
 app.get("/", (req, res) => {
   res.render('home');
 });
@@ -261,7 +258,6 @@ app.get("/hane/create", (req, res) => {
 
 // Read（番号を指定して 1 件の詳細を表示）
 app.get("/hane/:number", (req, res) => {
-  // 本来ならここにDBとのやり取りが入る
   const number = req.params.number;
   const detail = tyoko[ number ];
   res.render('hane_detail', {id: number, data: detail} );
@@ -269,7 +265,6 @@ app.get("/hane/:number", (req, res) => {
 
 // edit（編集フォームを表示）
 app.get("/hane/edit/:number", (req, res) => {
-  // 本来ならここにDBとのやり取りが入る
   const number = req.params.number;
   const detail = tyoko[ number ];
   res.render('hane_edit', {id: number, data: detail} );
@@ -277,8 +272,6 @@ app.get("/hane/edit/:number", (req, res) => {
 
 // Update（編集フォームの内容で 1 件を更新）
 app.post("/hane/update/:number", (req, res) => {
-  // 本来は変更する番号が存在するか，各項目が正しいか厳重にチェックする
-  // 本来ならここにDBとのやり取りが入る
   tyoko[req.params.number].image1 = req.body.image1;
   tyoko[req.params.number].image2 = req.body.image2;
   tyoko[req.params.number].name = req.body.name;
@@ -335,7 +328,5 @@ app.post("/hane/delete-confirm/:number", (req, res) => {
 app.use((req, res) => {
   res.status(404).sendFile(__dirname + '/public/error.html');
 });
-
-// Azure App Service は PORT 環境変数でポートを注入する。ローカルでは 8080 で動く
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
