@@ -4,6 +4,8 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
+// マインスイーパー（Vite ビルド済み静的アプリ）。vite.config の base が /minesweeper/ なのでパスが一致する
+app.use("/minesweeper", express.static(__dirname + "/public/minesweeper"));
 app.use(express.urlencoded({ extended: true }));
 
 let station = [

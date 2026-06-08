@@ -7,6 +7,7 @@
 - 図鑑一覧 … `http://<VMのパブリックIP>:8080/pokemonzukan`
 - 最強剣一覧 … `http://<VMのパブリックIP>:8080/saikyouken`
 - 特殊羽リスト … `http://<VMのパブリックIP>:8080/hane`
+- マインスイーパー … `http://<VMのパブリックIP>:8080/minesweeper/`（末尾スラッシュ推奨）
 
 ---
 
@@ -105,3 +106,22 @@ sudo nginx -t && sudo systemctl restart nginx
 - VM を停止(割り当て解除)するとパブリックIPが変わることがある。固定したい場合は
   ポータルでパブリックIPを「静的」に変更する。
 - アプリは `PORT` 環境変数を見る実装（未指定なら8080）。pm2 起動時に `PORT=8080` を渡している。
+
+## マインスイーパーについて
+
+`/minesweeper/` は `minesweeper/`（React + Vite 製）を**ビルドした静的ファイル**を
+`public/minesweeper/` に置き、`app5.js` の `express.static` で配信している。
+VM 側にビルド環境は不要で、`git pull` で同期されたファイルをそのまま配るだけ。
+
+ゲーム本体を修正した場合の更新手順（ローカルで実行）:
+
+```bash
+cd minesweeper
+npm install        # 初回のみ
+npm run build      # dist/ を再生成（vite.config の base は /minesweeper/ 固定）
+cd ..
+rm -rf public/minesweeper && cp -a minesweeper/dist/. public/minesweeper/
+git add public/minesweeper && git commit -m "[改善] マインスイーパー更新" && git push
+```
+
+VM 側は `git pull && pm2 restart webpro` で反映される（`npm install` は不要）。
