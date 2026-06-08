@@ -1,0 +1,76 @@
+% ===============================================================
+%  Web プログラミング レポート
+%  コンパイル: lualatex report.tex （TeX Live 2025 / LuaLaTeX）
+% ===============================================================
+\documentclass[a4paper,11pt]{ltjsarticle}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{url}
+
+% --- ソースコード表示の設定（日本語コメントを含む JavaScript 用）---
+\definecolor{codegray}{gray}{0.4}
+\definecolor{codekeyword}{RGB}{0,0,180}
+\definecolor{codestring}{RGB}{160,0,0}
+
+% listings は JavaScript を標準サポートしないため，コメント・文字列・キーワードを手動定義する
+\lstset{
+  basicstyle=\ttfamily\small,
+  commentstyle=\color{codegray},
+  keywordstyle=\color{codekeyword},
+  stringstyle=\color{codestring},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  morekeywords={const,let,var,function,return,require,if,else,for,switch,case,break,default,new},
+  numbers=left,
+  numberstyle=\tiny\color{codegray},
+  stepnumber=1,
+  numbersep=8pt,
+  frame=single,
+  breaklines=true,
+  breakindent=20pt,
+  showstringspaces=false,
+  tabsize=2,
+  columns=fullflexible,
+  keepspaces=true,
+}
+
+\title{Web アプリへのマインスイーパー統合と Azure 上での公開}
+\author{学籍番号: 25G1104 \quad 氏名: 沼田 晴}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{目的}
+
+これまでの授業で，Express（Node.js）を用いた Web アプリ \texttt{app5.js} を作成してきた．
+このアプリは，京葉線の駅一覧・残念なポケモン図鑑・最強剣一覧・特殊羽一覧といった
+複数の一覧を 1 つのサーバーで提供するものである．
+
+本課題の目的は，これとは別に React で制作したゲーム「マインスイーパー」を，
+この既存の Web アプリへ統合し，\textbf{Azure 上の同一サーバーから URL を入力するだけで
+ブラウザ上で遊べるようにする}ことである．具体的には，次の 2 点を実現する．
+
+\begin{itemize}
+  \item マインスイーパーを \texttt{http://<サーバーの IP>:8080/minesweeper/} で公開し，
+        ブラウザから直接アクセスして遊べるようにする．
+  \item トップページ（一覧メニュー）からもマインスイーパーへ遷移できるようにし，
+        ゲーム画面からはトップページへ戻れるようにする．
+\end{itemize}
+
+マインスイーパー本体はあらかじめ静的ファイル（HTML・JavaScript・CSS）としてビルドしておき，
+サーバー側（\texttt{app5.js}）からその静的ファイルを配信する構成とした．
+これにより，サーバー側では新たなライブラリを追加することなく，
+既存の Express の仕組みだけでゲームを公開できる．
+
+\section{サーバー側プログラム}
+
+サーバー側のプログラム \texttt{app5.js} の全文を以下に示す．
+マインスイーパーは \lstinline|app.use("/minesweeper", express.static(...))| の 1 行で配信している．
+
+\lstinputlisting{app5.js}
+
+\end{document}
