@@ -1,13 +1,24 @@
+// ============================================================
+// app5.js — Express 製の Web アプリ本体
+//   駅一覧 / ポケモン図鑑 / 最強剣 / 特殊羽 の各一覧と、
+//   別途 React で制作したマインスイーパーを 1 つのサーバーで配信する。
+//   Azure VM 上で pm2 により常駐させ、URL でアクセスできるようにしている。
+// ============================================================
 "use strict";
 const express = require("express");
 const app = express();
 
+// テンプレートエンジンに EJS を使用（views/ 配下の .ejs を描画）
 app.set('view engine', 'ejs');
+// /public 以下の静的ファイル（画像・CSS・HTML）を配信
 app.use("/public", express.static(__dirname + "/public"));
 // マインスイーパー（Vite ビルド済み静的アプリ）。vite.config の base が /minesweeper/ なのでパスが一致する
 app.use("/minesweeper", express.static(__dirname + "/public/minesweeper"));
+// POST されたフォーム値（application/x-www-form-urlencoded）を req.body で受け取れるようにする
 app.use(express.urlencoded({ extended: true }));
 
+// 以下の各配列は本来 DB に置くデータ。今回は学習用にサーバー内のメモリで保持する。
+// 京葉線の駅（簡易版）
 let station = [
   { id:1, code:"JE01", name:"東京駅"},
   { id:2, code:"JE07", name:"舞浜駅"},
@@ -17,6 +28,7 @@ let station = [
   { id:6, code:"JE05", name:"新浦安駅"},
 ];
 
+// 京葉線の駅（乗換・乗降客数・距離つきの詳細版）
 let station2 = [
   { id:1, code:"JE01", name:"東京駅", change:"総武本線，中央線，etc", passengers:403831, distance:0 },
   { id:2, code:"JE02", name:"八丁堀駅", change:"日比谷線", passengers:31071, distance:1.2 },
@@ -27,6 +39,7 @@ let station2 = [
   { id:7, code:"JE18", name:"蘇我駅", change:"内房線，外房線", passengers:31328, distance:43.0 },
 ];
 
+// ポケモン図鑑のデータ
 let pokemon = [
   { id:1, dot:"ロコンdot.png", code:37, name:"ロコン",  bunrui:"きつねポケモン", type:"炎", takasa:0.6, omosa:9.9, setumei:"自分より強い相手に襲われると傷ついたふりをして惑わせその隙に逃げてしまう。" , image:"ロコン.png" },
   { id:2, dot:"マンキーdot.png", code:56, name:"マンキー",  bunrui:"ぶたざるポケモン", type:"格闘", takasa:0.5, omosa:28.0, setumei:"木の上で群れを作って暮らす。群れからはぐれたマンキーは寂しくてすぐに怒り出す。", image:"マンキー.png" },
@@ -39,6 +52,7 @@ let pokemon = [
   { id:9, dot:"メタモンdot.png", code:132, name:"メタモン",  bunrui:"へんしんポケモン", type:"ノーマル", takasa:0.3, omosa:4.0, setumei:"変身は完璧なのだが笑わされて力が抜けると変身は解けてしまう", image:"メタモン.png" },
   { id:10, dot:"ポリゴンZdot.png", code:474, name:"ポリゴンZ",  bunrui:"バーチャルポケモン", type:"ノーマル", takasa:0.9, omosa:34.0, setumei:"さらに優れたポケモンを目指し追加したプログラムに不具合があったらしく動きがおかしい。", image:"ポリゴンZ.png" },
 ];
+// 最強剣（ステータス・合成素材つき）のデータ
 let saikyou = [
   { id:1, name:"霊刀・レイゲンノタチ",  level:"76", Atk:380, Mat:0, Pow:17, Int:12, Spd:0, Vit:0, Luk:0, setumei:"強力な霊力を纏い，魂をも斬るとされる霊刀。持つ者に合わせた重さになる。", sozai:"アメノハバキリ×1,呪われた刃×40,墓守の宝珠×14" },
   { id:2, name:"神撃剣",  level:"80", Atk:440, Mat:0, Pow:20, Int:15, Spd:0, Vit:0, Luk:0, setumei:"神すらも焼き尽くす聖炎と融合した人智を超えし神剣。", sozai:"霊刀・レイゲンノタチ×1,アポフィカリックテキスト×15,生命のアンク×50,エーデルフレイム×100" },
@@ -52,6 +66,7 @@ let saikyou = [
   { id:10, name:"真・神律剣マグナステラ(緑)",  level:"85", Atk:0, Mat:777, Pow:30, Int:60, Spd:0, Vit:50, Luk:0, setumei:"神を律する偉大な剣。真の力を手に入れた剣は世界に変革をもたらす強大な力を持つ。", sozai:"救世剣イデアフリード(青or緑)×1,ファントムメモリア×250,ミラージュメモリア×250,ファントムペリドット×250,メモリアペリドット×250,ファントムゼーレ×25.ミラージュゼーレ×25,夢幻のマリス×40,夢幻のレーヴ×40" },
 ];
 
+// 特殊羽（EX スキルつき）のデータ
 let tyoko = [
   { id:1, image1:"エル羽.png", image2:"エル.png", name:"チョコエルウイングEX", skill_name:"大天使の加護", skill:"MAXHP／MAXSP+400％,POW／INT／SPD／VIT／LUK+20％,ATK／DEF／MAT／MDF+20％,HP自動回復／SP自動回復+100％,ノックバック無効,状態異常解除／防止（呪い含む）", time_min:100, time_max:300, sp:1000, recast:15 },
   { id:2, image1:"ジュダ羽.png", image2:"ジュダ.png", name:"チョコジュダウイングEX", skill_name:"大悪魔の闇翼", skill:"敵の攻撃やスキルの対象にならず無敵状態で戦闘することができる", time_min:5, time_max:9, sp:1000, recast:15 },
@@ -65,11 +80,12 @@ let tyoko = [
   { id:10, image1:"リエ羽.png", image2:"リエ.png", name:"チョコリエパヴォーネEX", skill_name:"明王の守護・陰", skill:"敵からダメージを受けた際、受けるダメージを30%軽減,スキル再使用時間を50％短縮,スキル詠唱時間及びスキル硬直時間を30%短縮,SPD30%上昇,MAXHP+200%,HP自動回復+50%,SP自動回復+50%,状態異常解除／防止（呪い含む）", time_min:60, time_max:300, sp:1000, recast:15 },
 ];
 
-// ホーム画面（各一覧へのメニュー）
+// ===== ホーム画面（各一覧・マインスイーパーへのメニュー） =====
 app.get("/", (req, res) => {
   res.render('home');
 });
 
+// ===== 京葉線 駅一覧（詳細版・CRUD） =====
 app.get("/keiyo2", (req, res) => {
   // 本来ならここにDBとのやり取りが入る
   res.render('keiyo2', {data: station2} );
@@ -109,6 +125,7 @@ app.post("/keiyo2/update/:number", (req, res) => {
   res.redirect('/keiyo2' );
 });
 
+// ===== 京葉線 駅一覧（簡易版） =====
 app.get("/keiyo", (req, res) => {
   // 本来ならここにDBとのやり取りが入る
   res.render('db1', { data: station });
@@ -123,6 +140,7 @@ app.get("/keiyo_add", (req, res) => {
   res.render('db1', { data: station });
 });
 
+// ===== ポケモン図鑑（一覧・追加・編集・削除の CRUD） =====
 app.get("/pokemonzukan", (req, res) => {
   // 本来ならここにDBとのやり取りが入る
   res.render('pokemonzukan', {data: pokemon} );
@@ -211,7 +229,7 @@ app.post("/pokemonzukan/delete-confirm/:number", (req, res) => {
   console.log("削除を実行しました");
   res.redirect('/pokemonzukan');
 });
-// 最強剣
+// ===== 最強剣（一覧・追加・編集・削除の CRUD） =====
 app.get("/saikyouken", (req, res) => {
   // 本来ならここにDBとのやり取りが入る
   res.render('saikyouken', {data: saikyou} );
@@ -298,7 +316,7 @@ app.post("/saikyouken/delete-confirm/:number", (req, res) => {
   res.redirect('/saikyouken');
 });
 
-// 羽根
+// ===== 特殊羽（一覧・追加・編集・削除の CRUD） =====
 app.get("/hane", (req, res) => {
   // 本来ならここにDBとのやり取りが入る
   res.render('hane', {data: tyoko} );
@@ -380,6 +398,7 @@ app.post("/hane/delete-confirm/:number", (req, res) => {
 
 
 
+// ===== おまけ（授業の練習課題：あいさつ・おみくじ・じゃんけん等） =====
 app.get("/hello1", (req, res) => {
   const message1 = "Hello world";
   const message2 = "Bon jour";
@@ -470,8 +489,9 @@ app.get("/janken", (req, res) => {
   }
   res.render( 'janken', display );
 });
+// どのルートにも一致しなかった場合の 404 ページ（必ず最後に置く）
 app.use((req, res) => {
-  res.status(404).sendFile(__dirname + '/public/error.html'); 
+  res.status(404).sendFile(__dirname + '/public/error.html');
 });
 
 // Azure App Service は PORT 環境変数でポートを注入する。ローカルでは 8080 で動く
