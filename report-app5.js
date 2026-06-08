@@ -14,6 +14,8 @@ app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
 // POST されたフォーム値（application/x-www-form-urlencoded）を req.body で受け取れるようにする
 app.use(express.urlencoded({ extended: true }));
+// クイズ API の JSON ボディを受け取るために必要（express 標準機能）
+app.use(express.json());
 
 // 以下の各配列は本来 DB に置くデータ。今回は学習用にサーバー内のメモリで保持する。
 // ポケモン図鑑のデータ
@@ -55,6 +57,10 @@ let tyoko = [
   { id:9, image1:"リア羽.png", image2:"リア.png", name:"チョコリアパヴォーネEX", skill_name:"明王の鼓舞・陽", skill:"敵にダメージを与えた際、ダメージが10%増加,スキル再使用時間を50％短縮,スキル詠唱時間及びスキル硬直時間を30%短縮,SPD30%上昇,MAXHP+200%,HP自動回復+50%,SP自動回復+50%,状態異常解除／防止（呪い含む）", time_min:60, time_max:300, sp:1000, recast:15 },
   { id:10, image1:"リエ羽.png", image2:"リエ.png", name:"チョコリエパヴォーネEX", skill_name:"明王の守護・陰", skill:"敵からダメージを受けた際、受けるダメージを30%軽減,スキル再使用時間を50％短縮,スキル詠唱時間及びスキル硬直時間を30%短縮,SPD30%上昇,MAXHP+200%,HP自動回復+50%,SP自動回復+50%,状態異常解除／防止（呪い含む）", time_min:60, time_max:300, sp:1000, recast:15 },
 ];
+
+// クイズの正解をトークンに紐づけて保持する（クライアントには正解を渡さないため）。
+// key: token(string), value: { answerId: number, createdAt: number }
+let quizSessions = {};
 
 // ===== ホーム画面（各一覧へのメニュー） =====
 app.get("/", (req, res) => {
@@ -322,6 +328,62 @@ app.post("/hane/delete-confirm/:number", (req, res) => {
   tyoko.splice(number, 1);
   console.log("削除を実行しました");
   res.redirect('/hane');
+});
+
+// ===== 残念なポケモン図鑑クイズ =====
+// 図鑑説明文だけを見せて、それがどのポケモンかを 4 択で当てさせるクイズ。
+// 正解 ID はクライアントに渡さずサーバー側のトークンに保持し、採点もサーバーで行う。
+// これにより「サーバーが無いと遊べない＝クライアントだけではチートできない」を実現する。
+
+// クイズ画面（4 択 UI を表示するだけ。問題はこの後 /new で取得する）
+app.get("/pokemonquiz", (req, res) => {
+  res.render('pokemonquiz');
+});
+
+// 新しい問題を生成（正解 ID はクライアントに渡さない）
+app.get("/pokemonquiz/new", (req, res) => {
+  // ランダムに正解ポケモンを選ぶ
+  const answerIdx = Math.floor(Math.random() * pokemon.length);
+  const answer = pokemon[answerIdx];
+
+  // 残りからダミー 3 匹をランダムに選ぶ
+  const others = pokemon.filter(p => p.id !== answer.id);
+  const shuffled = others.sort(() => Math.random() - 0.5);
+  const dummies = shuffled.slice(0, 3);
+
+  // 4 択をシャッフル（正解の位置が固定にならないようにする）
+  const choices = [answer, ...dummies]
+    .sort(() => Math.random() - 0.5)
+    .map(p => ({ id: p.id, name: p.name }));
+
+  // トークンを発行し、正解はサーバー側にだけ保持する
+  const token = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  quizSessions[token] = { answerId: answer.id, createdAt: Date.now() };
+
+  // クライアントには「説明文」「4 択」「トークン」だけを返す（正解は渡さない）
+  res.json({ token, setumei: answer.setumei, choices });
+});
+
+// 解答を判定（採点したあとに初めて正解情報をクライアントへ渡す）
+app.post("/pokemonquiz/answer", (req, res) => {
+  const { token, choiceId } = req.body;
+  const session = quizSessions[token];
+  if (!session) {
+    return res.status(400).json({ error: "セッションが見つかりません" });
+  }
+
+  // サーバーが保持している正解 ID と突き合わせて採点する
+  const isCorrect = Number(choiceId) === session.answerId;
+  const correctPokemon = pokemon.find(p => p.id === session.answerId);
+  delete quizSessions[token];  // 使い終わったトークンは破棄（使い回し防止）
+
+  res.json({
+    correct: isCorrect,
+    correctId: correctPokemon.id,
+    correctName: correctPokemon.name,
+    correctImage: correctPokemon.image,
+    correctSetumei: correctPokemon.setumei
+  });
 });
 
 // どのルートにも一致しなかった場合の 404 ページ（必ず最後に置く）

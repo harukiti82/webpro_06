@@ -14,6 +14,8 @@ app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
 // POST されたフォーム値（application/x-www-form-urlencoded）を req.body で受け取れるようにする
 app.use(express.urlencoded({ extended: true }));
+// クイズ API の JSON ボディを受け取るために必要（express 標準機能）
+app.use(express.json());
 
 // 以下の各配列は本来 DB に置くデータ。今回は学習用にサーバー内のメモリで保持する。
 // 京葉線の駅（簡易版）
@@ -63,6 +65,10 @@ let saikyou = [
   { id:9, name:"真・神律剣マグナステラ(青)",  level:"85", Atk:777, Mat:0, Pow:60, Int:30, Spd:0, Vit:50, Luk:0, setumei:"神を律する偉大な剣。真の力を手に入れた剣は世界に変革をもたらす強大な力を持つ。", sozai:"救世剣イデアフリード(青or緑)×1,ファントムメモリア×250,ミラージュメモリア×250,ファントムペリドット×250,メモリアペリドット×250,ファントムゼーレ×25.ミラージュゼーレ×25,夢幻のマリス×40,夢幻のレーヴ×40" },
   { id:10, name:"真・神律剣マグナステラ(緑)",  level:"85", Atk:0, Mat:777, Pow:30, Int:60, Spd:0, Vit:50, Luk:0, setumei:"神を律する偉大な剣。真の力を手に入れた剣は世界に変革をもたらす強大な力を持つ。", sozai:"救世剣イデアフリード(青or緑)×1,ファントムメモリア×250,ミラージュメモリア×250,ファントムペリドット×250,メモリアペリドット×250,ファントムゼーレ×25.ミラージュゼーレ×25,夢幻のマリス×40,夢幻のレーヴ×40" },
 ];
+
+// クイズの正解をトークンに紐づけて保持する（クライアントには正解を渡さないため）。
+// key: token(string), value: { answerId: number, createdAt: number }
+let quizSessions = {};
 
 // 特殊羽（EX スキルつき）のデータ
 let tyoko = [
@@ -487,6 +493,56 @@ app.get("/janken", (req, res) => {
   }
   res.render( 'janken', display );
 });
+// ===== 残念なポケモン図鑑クイズ =====
+// クイズ画面
+app.get("/pokemonquiz", (req, res) => {
+  res.render('pokemonquiz');
+});
+
+// 新しい問題を生成（正解IDはクライアントに渡さない）
+app.get("/pokemonquiz/new", (req, res) => {
+  // ランダムに正解ポケモンを選ぶ
+  const answerIdx = Math.floor(Math.random() * pokemon.length);
+  const answer = pokemon[answerIdx];
+
+  // 残りからダミー3匹をランダムに選ぶ
+  const others = pokemon.filter(p => p.id !== answer.id);
+  const shuffled = others.sort(() => Math.random() - 0.5);
+  const dummies = shuffled.slice(0, 3);
+
+  // 4択をシャッフル
+  const choices = [answer, ...dummies]
+    .sort(() => Math.random() - 0.5)
+    .map(p => ({ id: p.id, name: p.name }));
+
+  // トークン発行・正解をサーバーに保持
+  const token = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  quizSessions[token] = { answerId: answer.id, createdAt: Date.now() };
+
+  res.json({ token, setumei: answer.setumei, choices });
+});
+
+// 解答を判定（採点後に初めて正解情報をクライアントに渡す）
+app.post("/pokemonquiz/answer", (req, res) => {
+  const { token, choiceId } = req.body;
+  const session = quizSessions[token];
+  if (!session) {
+    return res.status(400).json({ error: "セッションが見つかりません" });
+  }
+
+  const isCorrect = Number(choiceId) === session.answerId;
+  const correctPokemon = pokemon.find(p => p.id === session.answerId);
+  delete quizSessions[token];
+
+  res.json({
+    correct: isCorrect,
+    correctId: correctPokemon.id,
+    correctName: correctPokemon.name,
+    correctImage: correctPokemon.image,
+    correctSetumei: correctPokemon.setumei
+  });
+});
+
 // どのルートにも一致しなかった場合の 404 ページ（必ず最後に置く）
 app.use((req, res) => {
   res.status(404).sendFile(__dirname + '/public/error.html');
